@@ -1,14 +1,19 @@
 const express = require('express')
 const mongoose = require('mongoose')
+require("dotenv").config()
+
+const userRoute = require("./src/routes/person.routes")
 
 const app = express()
-
-require("dotenv").config()
 const port = 5000 || process.env.PORT
 
 app.listen(port, () => {
     console.log('Running in the port ', port)
-})
+});
+
+app.get("/", (req, res) => {
+    res.send("Welcome to my API");
+});
 
 mongoose.connect(process.env.CONNECTION_STRING_MONGODB)
     .then(() => {
@@ -18,4 +23,6 @@ mongoose.connect(process.env.CONNECTION_STRING_MONGODB)
         console.error(err);
     });
 
+
 app.use(express.json());
+app.use("/api", userRoute);
